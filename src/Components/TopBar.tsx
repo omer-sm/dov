@@ -6,7 +6,7 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 
 export default function TopBar() {
   return (
-    <AppBar sx={{ py: 0.25, px: 2 }}>
+    <AppBar position='fixed' sx={{ py: 0.25, px: 2 }}>
       <Toolbar>
         <Typography component="div" sx={{ flexGrow: 1 }} variant="h4">
           דוב 🐻
