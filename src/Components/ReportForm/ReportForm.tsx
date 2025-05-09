@@ -3,8 +3,9 @@ import FormControl from '@mui/material/FormControl';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Autocomplete from '@mui/material/Autocomplete';
 import { useSnapshot } from 'valtio';
-import { reportState } from '../State/ReportState/reportState';
+import { reportState } from '../../State/ReportState/reportState';
 import {
   LocalizationProvider,
   MobileDatePicker,
@@ -14,9 +15,13 @@ import {
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/he';
+import MultiStateButton from './MultiStateButton';
+import { situationState } from '../../State/SituationState/situationState'
+import { incrementSituationIndex } from '../../State/SituationState/utils'
 
 export default function ReportForm() {
   const reportSnap = useSnapshot(reportState);
+  const situationSnap = useSnapshot(situationState);
 
   return (
     <Stack gap={2} sx={{ minWidth: '20rem', width: '75%', margin: '1rem auto' }}>
@@ -78,6 +83,30 @@ export default function ReportForm() {
           />
         </FormControl>
       </LocalizationProvider>
+
+      <FormControl>
+        <FormLabel htmlFor="location-input">
+          <Typography variant="h6">מיקום</Typography>
+        </FormLabel>
+        <Autocomplete
+          freeSolo
+          id="location-input"
+          options={['חד"א', 'מגורים', 'שק"מ', 'מטווחים']}
+          value={reportSnap.location}
+          onChange={(_event, newValue) => (reportState.location = newValue as string)}
+          renderInput={(params) => <TextField {...params} placeholder='למשל: חד"א..' />}
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="situation-input">
+          <Typography variant="h6">מאפיין תחומי</Typography>
+        </FormLabel>
+        <MultiStateButton
+          currentState={situationSnap.currentSituation}
+          handleClick={incrementSituationIndex}
+        />
+      </FormControl>
     </Stack>
   );
 }

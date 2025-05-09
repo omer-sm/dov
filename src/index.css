@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
 
 :root {
-  font-family: "Assistant", sans-serif;
+  font-family: 'Assistant', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -24,4 +24,13 @@ body {
 
 .MuiPickersSectionList-root {
   justify-content: flex-end;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }

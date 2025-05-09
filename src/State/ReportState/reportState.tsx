@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { proxy } from 'valtio';
+import { roundTime } from './utils'
 
 interface Report {
   platoon: string;
@@ -16,7 +17,7 @@ interface Report {
 
 export const reportState = proxy<Report>({
   platoon: '',
-  date: dayjs(),
+  date: roundTime(dayjs()),
   location: '',
   situation: 'Routine',
   description: '',
