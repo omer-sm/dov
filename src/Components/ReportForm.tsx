@@ -5,7 +5,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../State/ReportState/reportState';
-import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
+import {
+  LocalizationProvider,
+  MobileDatePicker,
+  renderDigitalClockTimeView,
+  TimePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/he';
@@ -34,11 +39,36 @@ export default function ReportForm() {
           </FormLabel>
           <MobileDatePicker
             slotProps={{
+              field: { id: 'date-input' },
               dialog: { dir: 'rtl' },
               calendarHeader: { sx: { direction: 'ltr' } },
               toolbar: { toolbarFormat: 'ddd, D [ב]MMM' },
             }}
             sx={{ direction: 'ltr' }}
+            value={reportSnap.date}
+            onChange={(value) => {
+              if (value?.isValid()) {
+                reportState.date = dayjs(value);
+              }
+            }}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="time-input">
+            <Typography variant="h6">שעה</Typography>
+          </FormLabel>
+          <TimePicker
+            slotProps={{
+              field: { id: 'time-input' },
+              nextIconButton: { style: { visibility: 'hidden' } },
+              previousIconButton: { style: { visibility: 'hidden' } },
+              toolbar: { sx: { direction: 'rtl' } },
+            }}
+            sx={{ direction: 'ltr' }}
+            viewRenderers={{
+              hours: renderDigitalClockTimeView,
+              minutes: renderDigitalClockTimeView,
+            }}
             value={reportSnap.date}
             onChange={(value) => {
               if (value?.isValid()) {

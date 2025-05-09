@@ -17,3 +17,11 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+.MuiTimePickerToolbar-hourMinuteLabel {
+  flex-direction: row-reverse;
+}
+
+.MuiPickersSectionList-root {
+  justify-content: flex-end;
+}
