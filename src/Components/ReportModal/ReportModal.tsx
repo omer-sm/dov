@@ -13,6 +13,7 @@ import { formatReport } from '../../Utils/formatReport';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../../State/ReportState/reportState';
 import './copyButtonAnimations.css';
+import { Stack, Typography } from '@mui/material'
 
 interface ReportModalProps {
   dialogOpen: boolean;
@@ -39,9 +40,10 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
   return (
     <>
       <Dialog fullWidth={true} open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>הדוח מוכן !</DialogTitle>
-        <DialogContent sx={{overflow: 'visible'}}>
-          <Button
+        <DialogTitle>
+          <Stack direction='row' justifyContent='space-between' alignItems='center'>
+            <Typography variant='h4'>הדוח מוכן !</Typography>
+            <Button
             color="success"
             variant="contained"
             onClick={copyReport}
@@ -93,6 +95,9 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
               />
             )}
           </Button>
+          </Stack>
+        </DialogTitle>
+        <DialogContent>
           <TextField
             sx={{ width: '100%', my: '0.5rem' }}
             contentEditable={undefined}
