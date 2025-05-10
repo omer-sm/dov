@@ -11,6 +11,8 @@ import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
+import IconButton from '@mui/material/IconButton';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../../State/ReportState/reportState';
 import {
@@ -26,7 +28,8 @@ import MultiStateButton from './MultiStateButton';
 import { situationState } from '../../State/SituationState/situationState';
 import { incrementSituationIndex } from '../../State/SituationState/utils';
 import { useDebouncedCallback } from 'use-debounce';
-import type { Dispatch, SetStateAction } from 'react';
+import { useRef, type Dispatch, type SetStateAction } from 'react';
+import { formatDate, formatTime } from '../../Utils/formatReport'
 
 interface ReportFormProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -35,9 +38,27 @@ interface ReportFormProps {
 export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const reportSnap = useSnapshot(reportState);
   const situationSnap = useSnapshot(situationState);
+  const descriptionInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const debounce = useDebouncedCallback((callback) => {
     callback();
   }, 1000);
+
+  const addTimeToDescription = () => {
+    debounce.flush();
+
+    if (reportSnap.description.trim().startsWith('בתאריך')) {
+      const splitDesc = reportState.description.split(',', 2);
+      splitDesc[0] = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(reportSnap.date)}`;
+
+      reportState.description = splitDesc.join();
+    } else {
+      reportState.description = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(reportSnap.date)}, ${reportSnap.description}`;
+    }
+
+    if (descriptionInputRef.current) {
+      descriptionInputRef.current.value = reportState.description;
+    }
+  }
 
   return (
     <Stack gap={2} sx={{ minWidth: '20rem', width: '75%', margin: '1rem auto' }}>
@@ -206,12 +227,18 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       </FormControl>
 
       <FormControl>
-        <FormLabel htmlFor="description-input">
-          <Typography variant="h6">תיאור האירוע</Typography>
-        </FormLabel>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <FormLabel htmlFor="description-input">
+            <Typography variant="h6">תיאור האירוע</Typography>
+          </FormLabel>
+          <IconButton onClick={addTimeToDescription}>
+            <AutoAwesomeRoundedIcon />
+          </IconButton>
+        </Stack>
 
         <TextField
           id="description-input"
+          inputRef={descriptionInputRef}
           multiline
           maxRows={4}
           slotProps={{ input: { sx: { fontSize: '1.4rem' } } }}
