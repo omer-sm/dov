@@ -12,6 +12,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import IconButton from '@mui/material/IconButton';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../../State/ReportState/reportState';
@@ -28,10 +30,13 @@ import MultiStateButton from './MultiStateButton';
 import { situationState } from '../../State/SituationState/situationState';
 import { incrementSituationIndex } from '../../State/SituationState/utils';
 import { useDebouncedCallback } from 'use-debounce';
-import { useRef, type Dispatch, type SetStateAction } from 'react';
+import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 import { formatDate, formatTime } from '../../Utils/formatReport';
 import { saveReport } from '../../State/ReportState/storageHandler';
 import { clearReport } from '../../State/ReportState/utils';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import { useConfirm } from 'material-ui-confirm';
 
 interface ReportFormProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +46,8 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const reportSnap = useSnapshot(reportState);
   const situationSnap = useSnapshot(situationState);
   const descriptionInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const confirm = useConfirm();
+  const [clearToastOpen, setClearToastOpen] = useState(false);
   const debounce = useDebouncedCallback((callback) => {
     callback();
   }, 1000);
@@ -72,23 +79,6 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
 
   return (
     <Stack gap={2} sx={{ minWidth: '20rem', width: '75%', margin: '1rem auto' }}>
-      <Button
-        onClick={() => {
-          debounce.flush();
-          saveReport(reportSnap);
-        }}
-      >
-        save
-      </Button>
-      <Button
-        onClick={() => {
-          debounce.flush();
-          clearReport();
-          updateDescriptionInput();
-        }}
-      >
-        X
-      </Button>
       <FormControl>
         <FormLabel htmlFor="platoon-input">
           <Typography variant="h6">פלוגה</Typography>
@@ -272,17 +262,65 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
         />
       </FormControl>
 
-      <Button
-        variant="contained"
-        color="success"
-        onClick={() => {
-          debounce.flush();
-          setDialogOpen(true);
-        }}
-        focusRipple={false}
+      <Stack direction="row" justifyContent="space-between">
+        <Button
+          sx={{ width: '9rem', px: 0 }}
+          variant="contained"
+          color="success"
+          onClick={() => {
+            debounce.flush();
+            setDialogOpen(true);
+            saveReport(reportSnap);
+          }}
+          focusRipple={false}
+        >
+          <Typography variant="h6" sx={{ ml: 0.5 }}>
+            יצירת דוח
+          </Typography>
+          <AssignmentRoundedIcon />
+        </Button>
+
+        <Button
+          sx={{ width: '9rem', px: 0 }}
+          variant="contained"
+          color="error"
+          onClick={async () => {
+            const { confirmed } = await confirm({
+              title: 'לאפס את הדוח ?',
+              description: 'אי אפשר לבטל את זה!',
+              confirmationText: 'איפוס',
+              confirmationButtonProps: { color: 'error' },
+              cancellationText: 'חזרה',
+            });
+
+            if (confirmed) {
+              debounce.flush();
+              clearReport();
+              updateDescriptionInput();
+              setClearToastOpen(true);
+              saveReport(reportState);
+            }
+          }}
+        >
+          <Typography variant="h6">איפוס</Typography>
+          <ClearRoundedIcon />
+        </Button>
+      </Stack>
+
+      <Snackbar
+        open={clearToastOpen}
+        onClose={() => setClearToastOpen(false)}
+        autoHideDuration={1500}
       >
-        <Typography variant="h6">יצירת דוח</Typography>
-      </Button>
+        <Alert
+          slotProps={{ icon: { sx: { ml: 1, mr: 0 } } }}
+          sx={{ width: '100%' }}
+          severity="success"
+          variant="filled"
+        >
+          הדוח אופס בהצלחה !
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }
