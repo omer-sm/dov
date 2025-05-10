@@ -108,11 +108,19 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           freeSolo
           id="location-input"
           options={['חד"א', 'מגורים', 'שק"מ', 'מטווחים']}
-          defaultValue={reportSnap.location}
           onChange={(_event, newValue) =>
             debounce(() => (reportState.location = newValue as string))
           }
-          renderInput={(params) => <TextField {...params} placeholder='למשל: חד"א..' />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              defaultValue={reportSnap.location}
+              onChange={(event) =>
+                debounce(() => (reportState.location = event.target.value))
+              }
+              placeholder='למשל: חד"א..'
+            />
+          )}
         />
       </FormControl>
 

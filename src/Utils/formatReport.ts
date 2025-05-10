@@ -33,5 +33,5 @@ const reportFields: ((report: Report) => string)[] = [
 ];
 
 export const formatReport = (report: Report) => {
-  return reportFields.reduce((acc, curr) => acc + '\n' + curr(report), '');
+  return reportFields.reduce((acc, curr) => acc + '\n' + curr(report), '').trimStart();
 };
