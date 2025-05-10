@@ -50,7 +50,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const [clearToastOpen, setClearToastOpen] = useState(false);
   const debounce = useDebouncedCallback((callback) => {
     callback();
-  }, 1000);
+  }, 500);
 
   const updateDescriptionInput = () => {
     if (descriptionInputRef.current) {
