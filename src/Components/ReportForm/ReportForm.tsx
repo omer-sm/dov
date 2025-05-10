@@ -225,7 +225,10 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       <Button
         variant="contained"
         color="success"
-        onClick={() => setDialogOpen(true)}
+        onClick={() => {
+          debounce.flush();
+          setDialogOpen(true);
+        }}
         focusRipple={false}
       >
         <Typography variant="h6">יצירת דוח</Typography>
