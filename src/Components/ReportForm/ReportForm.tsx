@@ -5,6 +5,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../../State/ReportState/reportState';
 import {
@@ -19,10 +25,14 @@ import 'dayjs/locale/he';
 import MultiStateButton from './MultiStateButton';
 import { situationState } from '../../State/SituationState/situationState';
 import { incrementSituationIndex } from '../../State/SituationState/utils';
-import { Checkbox, Divider, FormControlLabel, Paper, ToggleButton } from '@mui/material';
 import { useDebouncedCallback } from 'use-debounce';
+import type { Dispatch, SetStateAction } from 'react';
 
-export default function ReportForm() {
+interface ReportFormProps {
+  setDialogOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const reportSnap = useSnapshot(reportState);
   const situationSnap = useSnapshot(situationState);
   const debounce = useDebouncedCallback((callback) => {
@@ -99,7 +109,9 @@ export default function ReportForm() {
           id="location-input"
           options={['חד"א', 'מגורים', 'שק"מ', 'מטווחים']}
           defaultValue={reportSnap.location}
-          onChange={(_event, newValue) => debounce(() => (reportState.location = newValue as string))}
+          onChange={(_event, newValue) =>
+            debounce(() => (reportState.location = newValue as string))
+          }
           renderInput={(params) => <TextField {...params} placeholder='למשל: חד"א..' />}
         />
       </FormControl>
@@ -201,6 +213,15 @@ export default function ReportForm() {
           }
         />
       </FormControl>
+
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => setDialogOpen(true)}
+        focusRipple={false}
+      >
+        <Typography variant="h6">יצירת דוח</Typography>
+      </Button>
     </Stack>
   );
 }

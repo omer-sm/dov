@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { proxy } from 'valtio';
 import { roundTime } from './utils'
 
-interface Report {
+export interface Report {
   platoon: string;
   date: Dayjs;
   location: string;
