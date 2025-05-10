@@ -29,7 +29,8 @@ import { situationState } from '../../State/SituationState/situationState';
 import { incrementSituationIndex } from '../../State/SituationState/utils';
 import { useDebouncedCallback } from 'use-debounce';
 import { useRef, type Dispatch, type SetStateAction } from 'react';
-import { formatDate, formatTime } from '../../Utils/formatReport'
+import { formatDate, formatTime } from '../../Utils/formatReport';
+import { saveReport } from '../../State/ReportState/storageHandler';
 
 interface ReportFormProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -48,26 +49,38 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
 
     if (reportSnap.description.trim().startsWith('בתאריך')) {
       const splitDesc = reportState.description.split(',', 2);
-      splitDesc[0] = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(reportSnap.date)}`;
+      splitDesc[0] = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(
+        reportSnap.date
+      )}`;
 
       reportState.description = splitDesc.join();
     } else {
-      reportState.description = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(reportSnap.date)}, ${reportSnap.description}`;
+      reportState.description = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(
+        reportSnap.date
+      )}, ${reportSnap.description}`;
     }
 
     if (descriptionInputRef.current) {
       descriptionInputRef.current.value = reportState.description;
     }
-  }
+  };
 
   return (
     <Stack gap={2} sx={{ minWidth: '20rem', width: '75%', margin: '1rem auto' }}>
+      <Button
+        onClick={() => {
+          debounce.flush();
+          saveReport(reportSnap);
+        }}
+      >
+        save
+      </Button>
       <FormControl>
         <FormLabel htmlFor="platoon-input">
           <Typography variant="h6">פלוגה</Typography>
         </FormLabel>
         <TextField
-          autoComplete='off'
+          autoComplete="off"
           id="platoon-input"
           placeholder="למשל: וייפר.."
           defaultValue={reportSnap.platoon}
@@ -88,10 +101,10 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
               toolbar: { toolbarFormat: 'ddd, D [ב]MMM' },
             }}
             sx={{ direction: 'ltr' }}
-            defaultValue={reportSnap.date}
+            value={reportSnap.date}
             onChange={(value) => {
               if (value?.isValid()) {
-                debounce(() => reportState.date = dayjs(value));
+                reportState.date = dayjs(value);
               }
             }}
           />
@@ -112,10 +125,10 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
               hours: renderDigitalClockTimeView,
               minutes: renderDigitalClockTimeView,
             }}
-            defaultValue={reportSnap.date}
+            value={reportSnap.date}
             onChange={(value) => {
               if (value?.isValid()) {
-                debounce(() => reportState.date = dayjs(value));
+                reportState.date = dayjs(value);
               }
             }}
           />
@@ -130,18 +143,14 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           freeSolo
           id="location-input"
           options={['חד"א', 'מגורים', 'שק"מ', 'מטווחים']}
-          onChange={(_event, newValue) => 
+          onChange={(_event, newValue) =>
             debounce(() => (reportState.location = newValue as string))
           }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              onChange={(event) =>
-                debounce(() => (reportState.location = event.target.value))
-              }
-              placeholder='למשל: חד"א..'
-            />
-          )}
+          onInputChange={(_event, newValue) =>
+            debounce(() => (reportState.location = newValue))
+          }
+          value={reportSnap.location}
+          renderInput={(params) => <TextField {...params} placeholder='למשל: חד"א..' />}
         />
       </FormControl>
 

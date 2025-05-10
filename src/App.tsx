@@ -3,11 +3,16 @@ import TopBar from './Components/TopBar';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './State/ThemeState/theme';
 import ReportForm from './Components/ReportForm/ReportForm'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReportModal from './Components/ReportModal/ReportModal'
+import { loadReport } from './State/ReportState/storageHandler'
 
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    loadReport();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
