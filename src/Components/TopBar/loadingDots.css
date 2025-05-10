@@ -12,7 +12,7 @@
   background: #ffffff;
   position: absolute;
   left: 0;
-  top: 0;
+  top: -5px;
   border-radius: 50%;
 }
 .typing span:nth-child(2) {

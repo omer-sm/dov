@@ -287,7 +287,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           onClick={async () => {
             const { confirmed } = await confirm({
               title: 'לאפס את הדוח ?',
-              description: 'אי אפשר לבטל את זה!',
+              description: 'זה לא ניתן לביטול!',
               confirmationText: 'איפוס',
               confirmationButtonProps: { color: 'error' },
               cancellationText: 'חזרה',
