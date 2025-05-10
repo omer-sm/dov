@@ -4,7 +4,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './State/ThemeState/theme';
 import ReportForm from './Components/ReportForm/ReportForm'
 import { useState } from 'react'
-import ReportModal from './Components/ReportModal'
+import ReportModal from './Components/ReportModal/ReportModal'
 
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
