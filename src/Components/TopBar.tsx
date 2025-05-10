@@ -11,9 +11,9 @@ export default function TopBar() {
         <Typography component="div" sx={{ flexGrow: 1 }} variant="h4">
           דוב 🐻
         </Typography>
-        <IconButton edge="start">
+        {/* <IconButton edge="start">
           <LightModeRoundedIcon />
-        </IconButton>
+        </IconButton> */}
       </Toolbar>
     </AppBar>
   );
