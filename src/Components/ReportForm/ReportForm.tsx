@@ -31,6 +31,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useRef, type Dispatch, type SetStateAction } from 'react';
 import { formatDate, formatTime } from '../../Utils/formatReport';
 import { saveReport } from '../../State/ReportState/storageHandler';
+import { clearReport } from '../../State/ReportState/utils';
 
 interface ReportFormProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -43,6 +44,12 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const debounce = useDebouncedCallback((callback) => {
     callback();
   }, 1000);
+
+  const updateDescriptionInput = () => {
+    if (descriptionInputRef.current) {
+      descriptionInputRef.current.value = reportState.description;
+    }
+  };
 
   const addTimeToDescription = () => {
     debounce.flush();
@@ -60,9 +67,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       )}, ${reportSnap.description}`;
     }
 
-    if (descriptionInputRef.current) {
-      descriptionInputRef.current.value = reportState.description;
-    }
+    updateDescriptionInput();
   };
 
   return (
@@ -74,6 +79,15 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
         }}
       >
         save
+      </Button>
+      <Button
+        onClick={() => {
+          debounce.flush();
+          clearReport();
+          updateDescriptionInput();
+        }}
+      >
+        X
       </Button>
       <FormControl>
         <FormLabel htmlFor="platoon-input">
