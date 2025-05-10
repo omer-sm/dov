@@ -6,11 +6,13 @@ import { useEffect, useState } from 'react';
 import ReportModal from './Components/ReportModal/ReportModal';
 import { loadReport } from './State/ReportState/storageHandler';
 import { ConfirmProvider } from 'material-ui-confirm';
-import { darkTheme, lightTheme } from './State/ThemeState/theme'
+import { darkTheme, lightTheme } from './State/ThemeState/theme';
 
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(
+    new Date().getHours() >= 20 || new Date().getHours() <= 6 ? 'dark' : 'light'
+  );
 
   useEffect(() => {
     loadReport();
@@ -21,7 +23,7 @@ function App() {
       <ConfirmProvider>
         <CssBaseline />
         <Box sx={{ m: 0, pt: '70px' }}>
-          <TopBar {...{themeMode, setThemeMode}} />
+          <TopBar {...{ themeMode, setThemeMode }} />
           <ReportForm {...{ setDialogOpen }} />
           <ReportModal {...{ dialogOpen, setDialogOpen }} />
         </Box>
