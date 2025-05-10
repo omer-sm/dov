@@ -67,6 +67,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           <Typography variant="h6">פלוגה</Typography>
         </FormLabel>
         <TextField
+          autoComplete='off'
           id="platoon-input"
           placeholder="למשל: וייפר.."
           defaultValue={reportSnap.platoon}
@@ -87,10 +88,10 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
               toolbar: { toolbarFormat: 'ddd, D [ב]MMM' },
             }}
             sx={{ direction: 'ltr' }}
-            value={reportSnap.date}
+            defaultValue={reportSnap.date}
             onChange={(value) => {
               if (value?.isValid()) {
-                reportState.date = dayjs(value);
+                debounce(() => reportState.date = dayjs(value));
               }
             }}
           />
@@ -111,10 +112,10 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
               hours: renderDigitalClockTimeView,
               minutes: renderDigitalClockTimeView,
             }}
-            value={reportSnap.date}
+            defaultValue={reportSnap.date}
             onChange={(value) => {
               if (value?.isValid()) {
-                reportState.date = dayjs(value);
+                debounce(() => reportState.date = dayjs(value));
               }
             }}
           />
@@ -129,13 +130,12 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           freeSolo
           id="location-input"
           options={['חד"א', 'מגורים', 'שק"מ', 'מטווחים']}
-          onChange={(_event, newValue) =>
+          onChange={(_event, newValue) => 
             debounce(() => (reportState.location = newValue as string))
           }
           renderInput={(params) => (
             <TextField
               {...params}
-              defaultValue={reportSnap.location}
               onChange={(event) =>
                 debounce(() => (reportState.location = event.target.value))
               }
