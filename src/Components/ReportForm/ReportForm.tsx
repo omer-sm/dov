@@ -262,6 +262,8 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
         />
       </FormControl>
 
+      <FormControl>                                           <FormLabel htmlFor="phone-input">                     <Typography variant="h6">טלפון לשליחה (לא חובה)</Typography>         </FormLabel>                                          <TextField                                              autoComplete="off"                                    id="phone-input"                                      defaultValue={reportSnap.destinationPhone}                     onChange={(event) => debounce(() => (reportState.destinationPhone = event.target.value))}                          />                                                  </FormControl> 
+
       <Stack direction="row" justifyContent="space-between">
         <Button
           sx={{ width: '9rem', px: 0 }}
