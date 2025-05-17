@@ -62,7 +62,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
     debounce.flush();
 
     if (reportSnap.description.trim().startsWith('בתאריך')) {
-      const splitDesc = reportState.description.split(',', 2);
+      const splitDesc = reportState.description.split(',');
       splitDesc[0] = `בתאריך ${formatDate(reportSnap.date)} בשעה ${formatTime(
         reportSnap.date
       )}`;

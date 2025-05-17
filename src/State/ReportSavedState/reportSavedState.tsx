@@ -2,7 +2,7 @@ import { proxy, subscribe } from "valtio"
 import { reportState } from "../ReportState/reportState"
 import { saveReport } from "../ReportState/storageHandler"
 
-const SAVE_TIME_MS = 2000;
+const SAVE_TIME_MS = 1000;
 
 export const reportSavedState = proxy<{reportSaved: boolean}>({
     reportSaved: true
