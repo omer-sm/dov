@@ -13,6 +13,7 @@ export interface Report {
     propertyDamaged: boolean;
   };
   severity: 'Light' | 'Medium' | 'Severe';
+  destinationPhone: string;
 }
 
 export const reportState = proxy<Report>({
@@ -26,4 +27,5 @@ export const reportState = proxy<Report>({
     propertyDamaged: false,
   },
   severity: 'Light',
+  destinationPhone: '',
 });
