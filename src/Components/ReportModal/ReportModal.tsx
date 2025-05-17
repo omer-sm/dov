@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
 import { useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { formatReport } from '../../Utils/formatReport';
 import { useSnapshot } from 'valtio';
@@ -106,6 +107,18 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
             multiline
             value={formattedReport}
           />
+	  <Button 
+	    href={encodeURI(`https://wa.me/${reportSnap.destinationPhone}?text=${formattedReport}`)}
+	    variant="contained"
+	    color="success"
+	    sx={{
+		    width: '100%',
+		    display: 'flex',
+		    justifyContent: 'center'
+	    }}
+	  >
+	    <SendRoundedIcon />
+	  </Button>
         </DialogContent>
       </Dialog>
 
