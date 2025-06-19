@@ -8,7 +8,7 @@ import { loadReport } from './State/ReportState/storageHandler';
 import { ConfirmProvider } from 'material-ui-confirm';
 import { darkTheme, lightTheme } from './State/ThemeState/theme';
 
-const ANALYTICS_URL = 'https://dov-analytics.omersm.workers.dev';
+export const ANALYTICS_URL = 'https://dov-analytics.omersm.workers.dev';
 
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);

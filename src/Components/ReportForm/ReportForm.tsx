@@ -37,6 +37,7 @@ import { clearReport } from '../../State/ReportState/utils';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import { useConfirm } from 'material-ui-confirm';
+import { ANALYTICS_URL } from '../../App';
 
 interface ReportFormProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -286,6 +287,11 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
             debounce.flush();
             setDialogOpen(true);
             saveReport(reportSnap);
+
+            fetch(`${ANALYTICS_URL}/statistics`, {
+              method: 'POST',
+              body: JSON.stringify({ statistic: 'REPORT_GENERATED' }),
+            });
           }}
           focusRipple={false}
         >
