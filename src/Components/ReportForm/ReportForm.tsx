@@ -183,6 +183,25 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       </FormControl>
 
       <FormControl>
+        <FormLabel htmlFor="situation-input">
+          <Typography variant="h6">מאפיין תחומי</Typography>
+        </FormLabel>
+        <Autocomplete
+          freeSolo
+          id="situation-input"
+          options={['בטיחות בדרכים', 'נשק ומקלעים', 'נפילות וחבלות']}
+          onChange={(_event, newValue) =>
+            debounce(() => (reportState.situation = newValue as string))
+          }
+          onInputChange={(_event, newValue) =>
+            debounce(() => (reportState.situation = newValue))
+          }
+          value={reportSnap.situation}
+          renderInput={(params) => <TextField {...params} placeholder='למשל: בטיחות בדרכים..' />}
+        />
+      </FormControl>
+
+      <FormControl>
         <FormLabel htmlFor="personal-activity-input">
           <Typography variant="h6">מאפיין פעילות הפרט</Typography>
         </FormLabel>
@@ -205,25 +224,6 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           onChange={(event) =>
             debounce(() => (reportState.teamActivity = event.target.value))
           }
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel htmlFor="situation-input">
-          <Typography variant="h6">מאפיין תחומי</Typography>
-        </FormLabel>
-        <Autocomplete
-          freeSolo
-          id="situation-input"
-          options={['בטיחות בדרכים', 'נשק ומקלעים', 'נפילות וחבלות']}
-          onChange={(_event, newValue) =>
-            debounce(() => (reportState.situation = newValue as string))
-          }
-          onInputChange={(_event, newValue) =>
-            debounce(() => (reportState.situation = newValue))
-          }
-          value={reportSnap.situation}
-          renderInput={(params) => <TextField {...params} placeholder='למשל: בטיחות בדרכים..' />}
         />
       </FormControl>
 
