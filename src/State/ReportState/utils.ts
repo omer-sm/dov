@@ -18,7 +18,7 @@ export const clearReport = () => {
     },
     severity: 'Light',
     personalActivity: '',
-    teamActivity: '',
+    teamActivity: 'הכשרה',
     recommendations: '',
   });
 };

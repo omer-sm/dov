@@ -9,13 +9,9 @@ export const formatDate = (date: Dayjs) =>
 export const formatTime = (date: Dayjs) =>
   date.toDate().toLocaleTimeString('he', { hour: 'numeric', minute: '2-digit' });
 
-const translateSituation = (situation: Report['situation']) => {
-  return situation === 'Routine' ? 'שגרה' : situation === 'Training' ? 'אימון' : 'חופשה';
+const translatePersonalActivity = (personalActivity: Report['situation']) => {
+  return personalActivity === 'Routine' ? 'שגרה' : personalActivity === 'Training' ? 'אימון' : 'חופשה';
 };
-
-// const translateSeverity = (severity: Report['severity']) => {
-//   return severity === 'Light' ? 'קל' : severity === 'Medium' ? 'בינוני' : 'קשה';
-// };
 
 const formatOutcome = (outcome: Report['outcome']) => {
   return `${outcome.peopleDamaged ? 'י' : 'א'}.נ.${
@@ -24,8 +20,7 @@ const formatOutcome = (outcome: Report['outcome']) => {
 };
 
 const reportFields: ((report: Report) => string)[] = [
-  () => '*דיווח ראשוני לאירוע*',
-  ({ situation }) => `*מאפיין תחומי* - ${translateSituation(situation)}`,
+  ({ situation }) => `*מאפיין תחומי* - ${situation}`,
   () => '*שם היחידה* - בט"ר דותן',
   ({name}) => `*שם המדווח* - ${name}`,
   ({name, phoneNumber}) => `*מספר טלפון ושם* - ${phoneNumber}, ${name}`,
@@ -34,7 +29,7 @@ const reportFields: ((report: Report) => string)[] = [
   ({ location }) => `*מקום האירוע* - ${location}`,
   ({ description }) => `*תיאור האירוע* - ${description}`,
   ({ outcome }) => `*תוצאות האירוע* - ${formatOutcome(outcome)}`,
-  ({personalActivity}) => `*מאפיין פעילות הפרט* - ${personalActivity}`,
+  ({situation: personalActivity}) => `*מאפיין פעילות הפרט* - ${translatePersonalActivity(personalActivity)}`,
   ({teamActivity}) => `*מאפיין פעילות היחידה* - ${teamActivity}`,
   ({recommendations}) => `*המלצות ראשוניות* - ${recommendations}`
 ];

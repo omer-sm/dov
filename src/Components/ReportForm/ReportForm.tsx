@@ -25,8 +25,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/he';
 import MultiStateButton from './MultiStateButton';
-import { situationState } from '../../State/SituationState/situationState';
-import { incrementSituationIndex } from '../../State/SituationState/utils';
+import { personalActivityState } from '../../State/PersonalActivityState/personalActivityState';
+import { incrementSituationIndex as incrementPersonalActivityIndex } from '../../State/PersonalActivityState/utils';
 import { useDebouncedCallback } from 'use-debounce';
 import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 import { formatDate, formatTime } from '../../Utils/formatReport';
@@ -43,10 +43,9 @@ interface ReportFormProps {
 
 export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const reportSnap = useSnapshot(reportState);
-  const situationSnap = useSnapshot(situationState);
+  const personalActivitySnap = useSnapshot(personalActivityState);
   const descriptionInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const recommendationsInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
-  const personalActivityInputRef = useRef<HTMLInputElement>(null);
   const teamActivityInputRef = useRef<HTMLInputElement>(null);
   
   const confirm = useConfirm();
@@ -62,10 +61,6 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
 
     if (recommendationsInputRef.current) {
       recommendationsInputRef.current.value = reportState.recommendations;
-    }
-
-    if (personalActivityInputRef.current) {
-      personalActivityInputRef.current.value = reportState.personalActivity;
     }
 
     if (teamActivityInputRef.current) {
@@ -188,12 +183,47 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       </FormControl>
 
       <FormControl>
+        <FormLabel htmlFor="personal-activity-input">
+          <Typography variant="h6">מאפיין פעילות הפרט</Typography>
+        </FormLabel>
+        <MultiStateButton
+          currentState={personalActivitySnap.currentActivity}
+          handleClick={incrementPersonalActivityIndex}
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="team-activity-input">
+          <Typography variant="h6">מאפיין פעילות היחידה</Typography>
+        </FormLabel>
+        <TextField
+          autoComplete="off"
+          inputRef={teamActivityInputRef}
+          id="team-activity-input"
+          defaultValue={reportSnap.teamActivity}
+          placeholder='למשל: הכשרה...'
+          onChange={(event) =>
+            debounce(() => (reportState.teamActivity = event.target.value))
+          }
+        />
+      </FormControl>
+
+      <FormControl>
         <FormLabel htmlFor="situation-input">
           <Typography variant="h6">מאפיין תחומי</Typography>
         </FormLabel>
-        <MultiStateButton
-          currentState={situationSnap.currentSituation}
-          handleClick={incrementSituationIndex}
+        <Autocomplete
+          freeSolo
+          id="situation-input"
+          options={['בטיחות בדרכים', 'נשק ומקלעים', 'נפילות וחבלות']}
+          onChange={(_event, newValue) =>
+            debounce(() => (reportState.situation = newValue as string))
+          }
+          onInputChange={(_event, newValue) =>
+            debounce(() => (reportState.situation = newValue))
+          }
+          value={reportSnap.situation}
+          renderInput={(params) => <TextField {...params} placeholder='למשל: בטיחות בדרכים..' />}
         />
       </FormControl>
 
@@ -251,36 +281,6 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
           defaultValue={reportSnap.description}
           onChange={(event) =>
             debounce(() => (reportState.description = event.target.value))
-          }
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel htmlFor="personal-activity-input">
-          <Typography variant="h6">מאפיין פעילות הפרט</Typography>
-        </FormLabel>
-        <TextField
-          autoComplete="off"
-          inputRef={personalActivityInputRef}
-          id="personal-activity-input"
-          defaultValue={reportSnap.personalActivity}
-          onChange={(event) =>
-            debounce(() => (reportState.personalActivity = event.target.value))
-          }
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel htmlFor="team-activity-input">
-          <Typography variant="h6">מאפיין פעילות היחידה</Typography>
-        </FormLabel>
-        <TextField
-          autoComplete="off"
-          inputRef={teamActivityInputRef}
-          id="team-activity-input"
-          defaultValue={reportSnap.teamActivity}
-          onChange={(event) =>
-            debounce(() => (reportState.teamActivity = event.target.value))
           }
         />
       </FormControl>

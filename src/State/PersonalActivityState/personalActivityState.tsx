@@ -4,13 +4,13 @@ import { subscribeKey } from 'valtio/utils'
 import { reportState } from '../ReportState/reportState'
 import type { Color } from '@mui/material'
 
-interface Situation {
+interface PersonalActivity {
     text: string;
     color: Color;
     key: 'Routine' | 'Training' | 'Vacation';
 }
 
-export const situations: Situation[] = [
+export const personalActivities: PersonalActivity[] = [
   {
     text: 'שגרה 📅',
     color: teal,
@@ -28,12 +28,12 @@ export const situations: Situation[] = [
   },
 ];
 
-export const situationState = proxy({
-    currentSituationIndex: 0,
-    currentSituation: situations[0]
+export const personalActivityState = proxy({
+    currentActivityIndex: 0,
+    currentActivity: personalActivities[0]
 });
 
-subscribeKey(situationState, 'currentSituationIndex', (newSituationIndex) => {
-    reportState.situation = situations[newSituationIndex].key;
-    situationState.currentSituation = situations[newSituationIndex];
+subscribeKey(personalActivityState, 'currentActivityIndex', (newActivityIndex) => {
+    reportState.situation = personalActivities[newActivityIndex].key;
+    personalActivityState.currentActivity = personalActivities[newActivityIndex];
 });

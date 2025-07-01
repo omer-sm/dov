@@ -8,7 +8,7 @@ export interface Report {
   location: string;
   name: string;
   phoneNumber: string;
-  situation: 'Routine' | 'Training' | 'Vacation';
+  situation: string;
   description: string;
   outcome: {
     peopleDamaged: boolean;
@@ -16,7 +16,7 @@ export interface Report {
   };
   severity: 'Light' | 'Medium' | 'Severe';
   recommendations: string;
-  personalActivity: string;
+  personalActivity: 'Routine' | 'Training' | 'Vacation';
   teamActivity: string;
   destinationPhone: string;
 }
@@ -27,7 +27,7 @@ export const reportState = proxy<Report>({
   location: '',
   name: '',
   phoneNumber: '',
-  situation: 'Routine',
+  situation: '',
   description: '',
   outcome: {
     peopleDamaged: false,
@@ -35,7 +35,7 @@ export const reportState = proxy<Report>({
   },
   severity: 'Light',
   recommendations: '',
-  personalActivity: '',
-  teamActivity: '',
+  personalActivity: 'Routine',
+  teamActivity: 'הכשרה',
   destinationPhone: '',
 });
