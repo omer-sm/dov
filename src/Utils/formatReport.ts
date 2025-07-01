@@ -13,9 +13,9 @@ const translateSituation = (situation: Report['situation']) => {
   return situation === 'Routine' ? 'שגרה' : situation === 'Training' ? 'אימון' : 'חופשה';
 };
 
-const translateSeverity = (severity: Report['severity']) => {
-  return severity === 'Light' ? 'קל' : severity === 'Medium' ? 'בינוני' : 'קשה';
-};
+// const translateSeverity = (severity: Report['severity']) => {
+//   return severity === 'Light' ? 'קל' : severity === 'Medium' ? 'בינוני' : 'קשה';
+// };
 
 const formatOutcome = (outcome: Report['outcome']) => {
   return `${outcome.peopleDamaged ? 'י' : 'א'}.נ.${
