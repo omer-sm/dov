@@ -17,5 +17,8 @@ export const clearReport = () => {
       propertyDamaged: false,
     },
     severity: 'Light',
+    personalActivity: '',
+    teamActivity: '',
+    recommendations: '',
   });
 };

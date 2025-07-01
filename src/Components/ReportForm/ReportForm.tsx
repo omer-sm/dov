@@ -45,15 +45,31 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   const reportSnap = useSnapshot(reportState);
   const situationSnap = useSnapshot(situationState);
   const descriptionInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const recommendationsInputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
+  const personalActivityInputRef = useRef<HTMLInputElement>(null);
+  const teamActivityInputRef = useRef<HTMLInputElement>(null);
+  
   const confirm = useConfirm();
   const [clearToastOpen, setClearToastOpen] = useState(false);
   const debounce = useDebouncedCallback((callback) => {
     callback();
   }, 300);
 
-  const updateDescriptionInput = () => {
+  const syncInputs = () => {
     if (descriptionInputRef.current) {
       descriptionInputRef.current.value = reportState.description;
+    }
+
+    if (recommendationsInputRef.current) {
+      recommendationsInputRef.current.value = reportState.recommendations;
+    }
+
+    if (personalActivityInputRef.current) {
+      personalActivityInputRef.current.value = reportState.personalActivity;
+    }
+
+    if (teamActivityInputRef.current) {
+      teamActivityInputRef.current.value = reportState.teamActivity;
     }
   };
 
@@ -73,7 +89,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       )}, ${reportSnap.description}`;
     }
 
-    updateDescriptionInput();
+    syncInputs();
   };
 
   return (
@@ -97,6 +113,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
         <TextField
           autoComplete="off"
           id="phone-input"
+          dir="ltr"
           defaultValue={reportSnap.phoneNumber}
           onChange={(event) =>
             debounce(() => (reportState.phoneNumber = event.target.value))
@@ -244,6 +261,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
         </FormLabel>
         <TextField
           autoComplete="off"
+          inputRef={personalActivityInputRef}
           id="personal-activity-input"
           defaultValue={reportSnap.personalActivity}
           onChange={(event) =>
@@ -258,6 +276,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
         </FormLabel>
         <TextField
           autoComplete="off"
+          inputRef={teamActivityInputRef}
           id="team-activity-input"
           defaultValue={reportSnap.teamActivity}
           onChange={(event) =>
@@ -273,6 +292,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
 
         <TextField
           id="recommendations-input"
+          inputRef={recommendationsInputRef}
           multiline
           maxRows={4}
           slotProps={{ input: { sx: { fontSize: '1.4rem' } } }}
@@ -337,7 +357,7 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
             if (confirmed) {
               debounce.flush();
               clearReport();
-              updateDescriptionInput();
+              syncInputs();
               setClearToastOpen(true);
               saveReport(reportState);
             }
