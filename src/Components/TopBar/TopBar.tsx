@@ -23,7 +23,7 @@ export default function TopBar({themeMode, setThemeMode}: TopBarProps) {
     <AppBar position="fixed" sx={{ py: 0.25, px: 2 }}>
       <Toolbar sx={{px: 0.2}}>
         <Typography component="div" sx={{ flexGrow: 0.95 }} variant="h4">
-          דוב 🐻
+          דוחות
         </Typography>
         <Stack
           sx={{ flexGrow: 0.05 }}
