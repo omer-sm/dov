@@ -7,6 +7,7 @@ import ReportModal from './Components/ReportModal/ReportModal';
 import { loadReport } from './State/ReportState/storageHandler';
 import { ConfirmProvider } from 'material-ui-confirm';
 import { darkTheme, lightTheme } from './State/ThemeState/theme';
+import Footer from './Components/Footer';
 
 export const ANALYTICS_URL = 'https://dov-analytics.omersm.workers.dev';
 
@@ -33,6 +34,7 @@ function App() {
           <TopBar {...{ themeMode, setThemeMode }} />
           <ReportForm {...{ setDialogOpen }} />
           <ReportModal {...{ dialogOpen, setDialogOpen }} />
+          <Footer />
         </Box>
       </ConfirmProvider>
     </ThemeProvider>
