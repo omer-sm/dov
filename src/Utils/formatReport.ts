@@ -24,17 +24,19 @@ const formatOutcome = (outcome: Report['outcome']) => {
 };
 
 const reportFields: ((report: Report) => string)[] = [
-  ({ platoon }) => `א. *מסגרת:* ${platoon}`,
+  () => '*דיווח ראשוני לאירוע*',
+  ({ situation }) => `*מאפיין תחומי* - ${translateSituation(situation)}`,
+  () => '*שם היחידה* - בט"ר דותן',
+  ({name}) => `*שם המדווח* - ${name}`,
+  ({name, phoneNumber}) => `*מספר טלפון ושם* - ${phoneNumber}, ${name}`,
   ({ date }) =>
-    `ב. *תאריך:* ${formatDate(date)}`,
-  ({ date }) =>
-    `ג. *שעה:* ${formatTime(date)}`,
-  ({ location }) => `ד. *מיקום:* ${location}`,
-  () => 'ה. *סיווג האירוע:* בלמס',
-  ({ situation }) => `ו. *מאפיין תחומי:* ${translateSituation(situation)}`,
-  ({ description }) => `ז. *תיאור האירוע:* ${description}`,
-  ({ outcome }) => `ח. *תוצאת האירוע:* ${formatOutcome(outcome)}`,
-  ({ severity }) => `ט. *חומרת פגיעה:* ${translateSeverity(severity)}`,
+    `*תאריך ושעת האירוע* - ${formatDate(date)} ${formatTime(date)}`,
+  ({ location }) => `*מקום האירוע* - ${location}`,
+  ({ description }) => `*תיאור האירוע* - ${description}`,
+  ({ outcome }) => `*תוצאות האירוע* - ${formatOutcome(outcome)}`,
+  ({personalActivity}) => `*מאפיין פעילות הפרט* - ${personalActivity}`,
+  ({teamActivity}) => `*מאפיין פעילות היחידה* - ${teamActivity}`,
+  ({recommendations}) => `*המלצות ראשוניות* - ${recommendations}`
 ];
 
 export const formatReport = (report: Report) => {

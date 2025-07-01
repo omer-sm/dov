@@ -4,13 +4,11 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Paper from '@mui/material/Paper';
-import ToggleButton from '@mui/material/ToggleButton';
 import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -81,15 +79,28 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
   return (
     <Stack gap={2} sx={{ minWidth: '20rem', width: '75%', margin: '1rem auto' }}>
       <FormControl>
-        <FormLabel htmlFor="platoon-input">
-          <Typography variant="h6">פלוגה</Typography>
+        <FormLabel htmlFor="name-input">
+          <Typography variant="h6">שם המדווח/ת</Typography>
         </FormLabel>
         <TextField
           autoComplete="off"
-          id="platoon-input"
-          placeholder="למשל: וייפר.."
-          defaultValue={reportSnap.platoon}
-          onChange={(event) => debounce(() => (reportState.platoon = event.target.value))}
+          id="name-input"
+          defaultValue={reportSnap.name}
+          onChange={(event) => debounce(() => (reportState.name = event.target.value))}
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="phone-input">
+          <Typography variant="h6">מספר טלפון</Typography>
+        </FormLabel>
+        <TextField
+          autoComplete="off"
+          id="phone-input"
+          defaultValue={reportSnap.phoneNumber}
+          onChange={(event) =>
+            debounce(() => (reportState.phoneNumber = event.target.value))
+          }
         />
       </FormControl>
 
@@ -170,42 +181,6 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       </FormControl>
 
       <FormControl>
-        <FormLabel htmlFor="severity-input">
-          <Typography variant="h6">חומרת פגיעה</Typography>
-        </FormLabel>
-        <ToggleButtonGroup
-          id="severity-input"
-          value={reportSnap.severity}
-          exclusive
-          onChange={(_event, newSeverity) => (reportState.severity = newSeverity)}
-          dir="ltr"
-        >
-          {[
-            { value: 'Severe', text: 'קשה', color: 'error' },
-            { value: 'Medium', text: 'בינוני', color: 'warning' },
-            { value: 'Light', text: 'קל', color: 'info' },
-          ].map((values) => (
-            <ToggleButton
-              value={values.value}
-              color={values.color as 'info' | 'warning' | 'error'}
-              key={values.value}
-              sx={{
-                width: '100%',
-                padding: '0.25rem 0',
-                fontWeight: '600',
-                fontSize: '1.4rem',
-                transitionProperty: 'background-color, color',
-                transitionDuration: '300ms',
-                transitionTimingFunction: 'cubic-bezier(.53,.49,.61,1.02)',
-              }}
-            >
-              {values.text}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </FormControl>
-
-      <FormControl>
         <FormLabel>
           <Typography color="textSecondary" variant="h6">
             נפגעים / נזק
@@ -264,13 +239,58 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
       </FormControl>
 
       <FormControl>
-        <FormLabel htmlFor="phone-input">
+        <FormLabel htmlFor="personal-activity-input">
+          <Typography variant="h6">מאפיין פעילות הפרט</Typography>
+        </FormLabel>
+        <TextField
+          autoComplete="off"
+          id="personal-activity-input"
+          defaultValue={reportSnap.personalActivity}
+          onChange={(event) =>
+            debounce(() => (reportState.personalActivity = event.target.value))
+          }
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="team-activity-input">
+          <Typography variant="h6">מאפיין פעילות היחידה</Typography>
+        </FormLabel>
+        <TextField
+          autoComplete="off"
+          id="team-activity-input"
+          defaultValue={reportSnap.teamActivity}
+          onChange={(event) =>
+            debounce(() => (reportState.teamActivity = event.target.value))
+          }
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="recommendations-input">
+          <Typography variant="h6">המלצות ראשוניות</Typography>
+        </FormLabel>
+
+        <TextField
+          id="recommendations-input"
+          multiline
+          maxRows={4}
+          slotProps={{ input: { sx: { fontSize: '1.4rem' } } }}
+          defaultValue={reportSnap.recommendations}
+          onChange={(event) =>
+            debounce(() => (reportState.recommendations = event.target.value))
+          }
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="dest-phone-input">
           <Typography variant="h6">טלפון לשליחה (לא חובה)</Typography>
         </FormLabel>
         <TextField
           autoComplete="off"
           dir="ltr"
-          id="phone-input"
+          id="dest-phone-input"
           defaultValue={reportSnap.destinationPhone}
           onChange={(event) =>
             debounce(() => (reportState.destinationPhone = event.target.value))

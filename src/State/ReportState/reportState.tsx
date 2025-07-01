@@ -6,6 +6,8 @@ export interface Report {
   platoon: string;
   date: Dayjs;
   location: string;
+  name: string;
+  phoneNumber: string;
   situation: 'Routine' | 'Training' | 'Vacation';
   description: string;
   outcome: {
@@ -13,6 +15,9 @@ export interface Report {
     propertyDamaged: boolean;
   };
   severity: 'Light' | 'Medium' | 'Severe';
+  recommendations: string;
+  personalActivity: string;
+  teamActivity: string;
   destinationPhone: string;
 }
 
@@ -20,6 +25,8 @@ export const reportState = proxy<Report>({
   platoon: '',
   date: roundTime(dayjs()),
   location: '',
+  name: '',
+  phoneNumber: '',
   situation: 'Routine',
   description: '',
   outcome: {
@@ -27,5 +34,8 @@ export const reportState = proxy<Report>({
     propertyDamaged: false,
   },
   severity: 'Light',
+  recommendations: '',
+  personalActivity: '',
+  teamActivity: '',
   destinationPhone: '',
 });
