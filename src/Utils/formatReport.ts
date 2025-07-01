@@ -9,6 +9,10 @@ export const formatDate = (date: Dayjs) =>
 export const formatTime = (date: Dayjs) =>
   date.toDate().toLocaleTimeString('he', { hour: 'numeric', minute: '2-digit' });
 
+const translateSeverity = (severity: Report['severity']) => {
+  return severity === 'Light' ? 'קל' : severity === 'Medium' ? 'בינוני' : 'קשה';
+};
+
 const translatePersonalActivity = (personalActivity: Report['situation']) => {
   return personalActivity === 'Routine' ? 'שגרה' : personalActivity === 'Training' ? 'אימון' : 'חופשה';
 };
@@ -16,21 +20,23 @@ const translatePersonalActivity = (personalActivity: Report['situation']) => {
 const formatOutcome = (outcome: Report['outcome']) => {
   return `${outcome.peopleDamaged ? 'י' : 'א'}.נ.${
     outcome.propertyDamaged ? 'י' : 'א'
-  }.נ`;
+  }.נ (${outcome.peopleDamaged ? 'יש' : 'אין'} נפגעים, ${outcome.propertyDamaged ? 'יש' : 'אין'} נזק)`;
 };
 
 const reportFields: ((report: Report) => string)[] = [
-  ({ situation }) => `*מאפיין תחומי* - ${situation}`,
+  ({severity, situation}) => `דיווח ראשוני לאירוע ${situation} ${translateSeverity(severity)}, בט"ר דותן`,
   () => '*שם היחידה* - בט"ר דותן',
   ({name}) => `*שם המדווח* - ${name}`,
-  ({name, phoneNumber}) => `*מספר טלפון ושם* - ${phoneNumber}, ${name}`,
+  ({phoneNumber}) => `*מספר טלפון* - ${phoneNumber}`,
   ({ date }) =>
-    `*תאריך ושעת האירוע* - ${formatDate(date)} ${formatTime(date)}`,
+    `*תאריך האירוע* - ${formatDate(date)}`,
+  ({date}) => `*שעת האירוע* - ${formatTime(date)}`,
   ({ location }) => `*מקום האירוע* - ${location}`,
-  ({ description }) => `*תיאור האירוע* - ${description}`,
+  ({ situation }) => `*מאפיין תחומי* - ${situation}`,
   ({ outcome }) => `*תוצאות האירוע* - ${formatOutcome(outcome)}`,
-  ({situation: personalActivity}) => `*מאפיין פעילות הפרט* - ${translatePersonalActivity(personalActivity)}`,
+  ({personalActivity}) => `*מאפיין פעילות הפרט* - ${translatePersonalActivity(personalActivity)}`,
   ({teamActivity}) => `*מאפיין פעילות היחידה* - ${teamActivity}`,
+  ({ description }) => `*תיאור האירוע* - ${description}`,
   ({recommendations}) => `*המלצות ראשוניות* - ${recommendations}`
 ];
 

@@ -34,6 +34,6 @@ export const personalActivityState = proxy({
 });
 
 subscribeKey(personalActivityState, 'currentActivityIndex', (newActivityIndex) => {
-    reportState.situation = personalActivities[newActivityIndex].key;
+    reportState.personalActivity = personalActivities[newActivityIndex].key;
     personalActivityState.currentActivity = personalActivities[newActivityIndex];
 });

@@ -36,6 +36,7 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import { useConfirm } from 'material-ui-confirm';
 import { ANALYTICS_URL } from '../../App';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 interface ReportFormProps {
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -260,6 +261,42 @@ export default function ReportForm({ setDialogOpen }: ReportFormProps) {
             }
           />
         </Paper>
+      </FormControl>
+
+      <FormControl>
+        <FormLabel htmlFor="severity-input">
+          <Typography variant="h6">חומרת פגיעה</Typography>
+        </FormLabel>
+        <ToggleButtonGroup
+          id="severity-input"
+          value={reportSnap.severity}
+          exclusive
+          onChange={(_event, newSeverity) => (reportState.severity = newSeverity)}
+          dir="ltr"
+        >
+          {[
+            { value: 'Severe', text: 'קשה', color: 'error' },
+            { value: 'Medium', text: 'בינוני', color: 'warning' },
+            { value: 'Light', text: 'קל', color: 'info' },
+          ].map((values) => (
+            <ToggleButton
+              value={values.value}
+              color={values.color as 'info' | 'warning' | 'error'}
+              key={values.value}
+              sx={{
+                width: '100%',
+                padding: '0.25rem 0',
+                fontWeight: '600',
+                fontSize: '1.4rem',
+                transitionProperty: 'background-color, color',
+                transitionDuration: '300ms',
+                transitionTimingFunction: 'cubic-bezier(.53,.49,.61,1.02)',
+              }}
+            >
+              {values.text}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
       </FormControl>
 
       <FormControl>
