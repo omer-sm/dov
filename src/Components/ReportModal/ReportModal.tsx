@@ -110,20 +110,22 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
             multiline
             value={formattedReport}
           />
-	  <Button 
-    onClick={() => reportAnalytic('REPORT_SENT_ON_WHATSAPP')}
-    target='_blank'
-	    href={encodeURI(`https://wa.me/${reportSnap.destinationPhone}?text=${formattedReport}`)}
-	    variant="contained"
-	    color="success"
-	    sx={{
-		    width: '100%',
-		    display: 'flex',
-		    justifyContent: 'center'
-	    }}
-	  >
-	    <SendRoundedIcon />
-	  </Button>
+          <Button
+            onClick={() => reportAnalytic('REPORT_SENT_ON_WHATSAPP')}
+            target="_blank"
+            href={encodeURI(
+              `https://wa.me/${reportSnap.destinationPhone}?text=${formattedReport}`
+            )}
+            variant="contained"
+            color="success"
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <SendRoundedIcon />
+          </Button>
         </DialogContent>
       </Dialog>
 
