@@ -8,8 +8,7 @@ import { loadReport } from './State/ReportState/storageHandler';
 import { ConfirmProvider } from 'material-ui-confirm';
 import { darkTheme, lightTheme } from './State/ThemeState/theme';
 import Footer from './Components/Footer';
-
-export const ANALYTICS_URL = 'https://dov-analytics.omersm.workers.dev';
+import { reportAnalytic } from './Utils/analytics';
 
 function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -20,10 +19,7 @@ function App() {
   useEffect(() => {
     loadReport();
 
-    fetch(`${ANALYTICS_URL}/statistics`, {
-      method: 'POST',
-      body: JSON.stringify({ statistic: 'VISIT' }),
-    });
+    reportAnalytic('VISIT');
   }, []);
 
   return (

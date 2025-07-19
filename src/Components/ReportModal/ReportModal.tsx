@@ -16,6 +16,7 @@ import { formatReport } from '../../Utils/formatReport';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../../State/ReportState/reportState';
 import './copyButtonAnimations.css';
+import { reportAnalytic } from '../../Utils/analytics';
 
 interface ReportModalProps {
   dialogOpen: boolean;
@@ -37,6 +38,8 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
     }
 
     navigator.clipboard.writeText(formattedReport);
+
+    reportAnalytic('REPORT_COPIED');
   };
 
   return (
@@ -108,6 +111,8 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
             value={formattedReport}
           />
 	  <Button 
+    onClick={() => reportAnalytic('REPORT_SENT_ON_WHATSAPP')}
+    target='_blank'
 	    href={encodeURI(`https://wa.me/${reportSnap.destinationPhone}?text=${formattedReport}`)}
 	    variant="contained"
 	    color="success"
