@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
-import { useMemo, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -16,7 +17,7 @@ import { formatReport } from '../../Utils/formatReport';
 import { useSnapshot } from 'valtio';
 import { reportState } from '../../State/ReportState/reportState';
 import './copyButtonAnimations.css';
-import { reportAnalytic } from '../../Utils/analytics';
+import { reportAnalytic, sendReport } from '../../Utils/analytics';
 
 interface ReportModalProps {
   dialogOpen: boolean;
@@ -28,6 +29,10 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
   const reportSnap = useSnapshot(reportState);
   const formattedReport = useMemo(() => formatReport(reportSnap), [dialogOpen]);
   const theme = useTheme();
+
+  useEffect(() => {
+    sendReport(reportSnap);
+  }, [dialogOpen]);
 
   const copyReport = () => {
     if (copyButtonState === 0) {
