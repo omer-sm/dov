@@ -31,7 +31,9 @@ export default function ReportModal({ dialogOpen, setDialogOpen }: ReportModalPr
   const theme = useTheme();
 
   useEffect(() => {
-    sendReport(reportSnap);
+    if (dialogOpen) {
+      sendReport(reportSnap);
+    }
   }, [dialogOpen]);
 
   const copyReport = () => {

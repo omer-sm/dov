@@ -33,10 +33,12 @@ export const sendReport = (report: Report) => {
       recommendations: report.recommendations,
     };
 
-    fetch(`${ANALYTICS_URL}/last-report`, {
-      method: 'PUT',
-      body: JSON.stringify(formattedReport),
-    });
+    if (formattedReport.description) {
+      fetch(`${ANALYTICS_URL}/last-report`, {
+        method: 'PUT',
+        body: JSON.stringify(formattedReport),
+      });
+    }
   } catch (e) {
     console.error(e);
   }
